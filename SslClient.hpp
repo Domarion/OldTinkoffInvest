@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdlib>
+#include <iostream>
 
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
@@ -10,7 +11,7 @@
 #include <boost/asio/ssl/error.hpp>
 #include <boost/asio/ssl/stream.hpp>
 
-#include "tinkoffApi.hpp"
+#include "TinkoffApi.hpp"
 
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
@@ -116,3 +117,30 @@ private:
     tcp::resolver resolver;
     ssl::stream<tcp::socket> stream;
 };
+
+http::request<http::string_body> MakePortfolioRequest(
+    const std::string& aHost,
+    const std::string& aToken)
+{
+    return MakeGetRequest(aHost, "/openapi/portfolio", aToken);
+}
+
+http::request<http::string_body> MakeOperationsRequest(
+    const std::string& aHost,
+    const std::string& aToken)
+{
+    TinkoffApi::OperationRequest request;
+    request.from = "2020-01-01T00:00:01.000000+03:00";
+    request.to = "2020-02-01T00:00:01.000000+03:00";
+
+    const auto targetString = HttpGetTargetWriter::GetTarget(request.GetTarget(), request);
+
+    return MakeGetRequest(aHost, targetString, aToken);
+}
+
+http::request<http::string_body> MakeMarketStocksRequest(
+    const std::string& aHost,
+    const std::string& aToken)
+{
+    return MakeGetRequest(aHost, TinkoffApi::GetMarketStocksTarget(), aToken);
+}

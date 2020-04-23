@@ -39,11 +39,21 @@ find_package (Boost COMPONENTS system)
 include_directories (${Boost_INCLUDE_DIRS})
 
 SET(
+    HEADERS
+    UrlEncoder.hpp
+    TinkoffApi.hpp
+    IParserHandler.hpp
+    Parser.hpp
+    TradesProcessor.hpp
+    SslClient.hpp
+)
+
+SET(
     SRC
-    tinkoffApi.hpp
-    sslClient.hpp
+    Parser.cpp
+    UrlEncoder.cpp
     main.cpp
 )
-ADD_EXECUTABLE( TinkoffTradesApi ${SRC} )
+ADD_EXECUTABLE( TinkoffTradesApi ${HEADERS} ${SRC} )
 
 TARGET_LINK_LIBRARIES( TinkoffTradesApi LINK_PUBLIC ${Boost_LIBRARIES} boost_system OpenSSL::SSL)
