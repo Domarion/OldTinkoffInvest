@@ -51,6 +51,11 @@ namespace TinkoffApi
         std::string operationType;
     };
 
+    inline bool operator<(const Operation& aLeft, const Operation& aRight) noexcept
+    {
+        return std::stoll(aLeft.id) < std::stoll(aRight.id);
+    }
+
     struct OperationsResponse
     {
         std::string trackingId;

@@ -21,6 +21,11 @@ int main(int argc, char** argv)
 
     SimpleSslHttpClient client;
 
+    TinkoffApi::OperationRequest request;
+    request.from = "2019-01-01T00:00:01.000000+03:00";
+    request.to = "2020-04-24T00:00:01.000000+03:00";
+
+    const auto operationsRequest = MakeOperationsRequest(request, host, token);
     try
     {
         client.Connect(host, port);
@@ -31,13 +36,14 @@ int main(int argc, char** argv)
             std::bind(&JsonParser::Parse, &parser, std::placeholders::_1, std::placeholders::_2),
             TinkoffApi::ResponseType::MarketStocksResponse);
 
-        client.SendHttpRequest(MakeOperationsRequest(host, token));
+        client.SendHttpRequest(operationsRequest);
 
         client.ProcessHttpResponse(
             std::bind(&JsonParser::Parse, &parser, std::placeholders::_1, std::placeholders::_2),
             TinkoffApi::ResponseType::OperationsResponse);
 
         processor->SaveTrades();
+        processor->SaveProfitLoss(request.from, request.to);
     }
     catch (std::exception const& e)
     {

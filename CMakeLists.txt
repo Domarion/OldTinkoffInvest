@@ -51,6 +51,7 @@ SET(
 SET(
     SRC
     Parser.cpp
+    TradesProcessor.cpp
     UrlEncoder.cpp
     main.cpp
 )

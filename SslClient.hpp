@@ -126,14 +126,11 @@ http::request<http::string_body> MakePortfolioRequest(
 }
 
 http::request<http::string_body> MakeOperationsRequest(
+    const TinkoffApi::OperationRequest& aRequest,
     const std::string& aHost,
     const std::string& aToken)
 {
-    TinkoffApi::OperationRequest request;
-    request.from = "2020-01-01T00:00:01.000000+03:00";
-    request.to = "2020-02-01T00:00:01.000000+03:00";
-
-    const auto targetString = HttpGetTargetWriter::GetTarget(request.GetTarget(), request);
+    const auto targetString = HttpGetTargetWriter::GetTarget(aRequest.GetTarget(), aRequest);
 
     return MakeGetRequest(aHost, targetString, aToken);
 }

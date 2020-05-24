@@ -92,6 +92,11 @@ void JsonParser::ParseOperations()
     {
         TinkoffApi::Operation operation;
 
+        if (CheckExist(operationObj, "id"))
+        {
+            operation.id = operationObj["id"].GetString();
+        }
+
         if (CheckExist(operationObj, "status"))
         {
             operation.status = operationObj["status"].GetString();
@@ -130,6 +135,11 @@ void JsonParser::ParseOperations()
         if (CheckExist(operationObj, "date"))
         {
             operation.date = operationObj["date"].GetString();
+        }
+
+        if (CheckExist(operationObj, "payment"))
+        {
+            operation.payment = operationObj["payment"].GetDouble();
         }
 
         if (CheckExist(operationObj, "commission"))
